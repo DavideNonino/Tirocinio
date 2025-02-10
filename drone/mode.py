@@ -44,13 +44,13 @@ def set_mode(the_connection, mode):
         the_connection.mav.command_long_send(the_connection.target_system, the_connection.target_component, mavutil.mavlink.MAV_CMD_DO_SET_MODE,
                                 0, mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED, mode_id, 0, 0, 0, 0, 0)
         print("attesa ACK...")
-        ack_msg = the_connection.recv_match(type='COMMAND_ACK', blocking=True, timeout=3)
+        ack_msg = the_connection.recv_match(type='COMMAND_ACK', blocking=True, timeout=10)
         #print(ack_msg)
         if ack_msg.result == mavutil.mavlink.MAV_RESULT_ACCEPTED:
             print(f"modalità cambiata in {mode}")
-            return ack_msg.result
+            print(ack_msg)
         else:
-            print("Non è stato possibile inserire questa modalità")
+            print("Errore, ACK non ricevuto")
     
     except Exception as e:
         print(f"Errore durante il cambio di modalità: {e}")

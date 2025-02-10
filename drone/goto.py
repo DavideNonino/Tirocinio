@@ -82,10 +82,4 @@ def is_at_target(current_lat, current_lon, target_lat, target_lon, threshold=1.0
 
 if __name__ == "__main__":
     the_connection = connect.connect('udpin:127.0.0.1:5760',10)
-    mode.set_mode(the_connection,"GUIDED")
-    time.sleep(10)
-    arm.arm( the_connection )
-    time.sleep(2)
-    takeoff.takeoff(the_connection,20)
-    time.sleep(30)
-    goto(the_connection, 45.824503, 13.483549, 20 )
+    goto(the_connection, 45.935230, 13.108997, 20 )

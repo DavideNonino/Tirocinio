@@ -17,14 +17,18 @@ def set_yaw( the_connection, yaw: float, yaw_speed: float = 10, direction: int =
 
         print(f"Comando inviato con angolo YAW:{yaw}° e velocità: {yaw_speed}")
         
-        set_yaw_ack = the_connection.recv_match(type='COMMAND_ACK', blocking=True, timeout=3)
-        print(f"Set Yaw ACK:  {set_yaw_ack}")
-        return set_yaw_ack.result
-    
+        set_yaw_ack = the_connection.recv_match(type='COMMAND_ACK', blocking=True, timeout=10)
+        if set_yaw_ack:
+            print(f"Set Yaw ACK:  {set_yaw_ack}")
+
+        else:
+            print("Errore, YAW ACK non ricevuto")
+
+        
     except Exception as e:
         print(f"Errore nell'invio del comando di YAW:{e}")
 
 
 if __name__ == "__main__":
     the_connection = connect.connect('udpin:127.0.0.1:5760',10)
-    set_yaw(the_connection,180)
+    set_yaw(the_connection,270)

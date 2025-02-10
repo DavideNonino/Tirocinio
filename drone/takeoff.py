@@ -28,9 +28,10 @@ def takeoff(the_connection, altitude):
                 msg = the_connection.recv_match(type='COMMAND_ACK', blocking=True, timeout=10)
                 if msg.result == mavutil.mavlink.MAV_RESULT_ACCEPTED:
                     print(f"Decollo accettato. Il drone sta salendo fino a {altitude} metri.")
+                    print(msg)
                     monitor_takeoff(the_connection,altitude)
                 else:
-                    print("Errore durante il takeoff.")
+                    print("Errore, ACK non ricevuto.")
     
             except Exception as e:
                 print(f"Errore durante il takeoff: {e}")

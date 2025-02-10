@@ -19,7 +19,7 @@ def connect(connection_str : str, timeout : float = 10 ):
         the_connection = mavutil.mavlink_connection(connection_str,timeout=timeout)
         print("Connessione stabilita, attesa heartbeat...")
     except Exception as e:
-        print("Connessione fallita")
+        print(f"Connessione fallita: {e}")
         return 
 
     try:
@@ -29,6 +29,12 @@ def connect(connection_str : str, timeout : float = 10 ):
     except Exception as e:
         print(f"Timeout! Nessun heartbeat ricevuto in {timeout} secondi: {e}")
 
+def close_connection( the_connection ):
+    the_connection.close()
+    print("Connessione chiusa correttamente")
+
+
 if __name__ == "__main__":
     connect('udpin:127.0.0.1:5760',10)
+    
 

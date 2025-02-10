@@ -17,7 +17,7 @@ def convert_mission_txt_to_json(txt_file, json_file):
     with open(txt_file, 'r') as file:
         for line in file:
             # Rimuovi spazi bianchi extra e salta le righe vuote
-            if not line:
+            if not line or "seq" in line:
                 continue
             
             # Estrai i valori separati da virgola
@@ -110,10 +110,27 @@ def upload_mission(the_connection, mission_items):
     else:
         print("La modalità attuale non permette il caricamento della missione")   
 
+def clear_mission( the_connection ):
+    
+    try:
+        the_connection.mav.mission_clear_all_send(
+            the_connection.target_system,
+            the_connection.target_component
+        )
 
- 
+        msg_ack = the_connection.recv_match(type='MISSION_ACK', blocking=True, timeout=10)
+        if msg_ack:
+            if msg_ack.type == 0:
+                print("Missione cancellata!!")
+            else:
+                print("Missione NON cancellata!!")
+        else:
+            print("Errore nella ricezione dell'ACK") 
+    except Exception as e:
+        print(f"Errore nella cancellazione della missione: {e}")
 
 # Esegui la conversione (specifica il percorso del file di input e di output)
 the_connection = connect.connect('udpin:127.0.0.1:5760',10)
 convert_mission_txt_to_json('rally-items.txt', 'converted_mission.json')
 mission(the_connection, 'converted_mission.json')
+clear_mission(the_connection)
